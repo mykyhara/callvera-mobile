@@ -8,9 +8,11 @@
     "scheme": "callveramobile",
     "userInterfaceStyle": "automatic",
     "ios": {
+      "bundleIdentifier": "com.callvera.app",
       "icon": "./assets/expo.icon"
     },
     "android": {
+      "package": "com.callvera.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
