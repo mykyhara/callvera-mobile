@@ -81,7 +81,7 @@ export function LeadsList() {
   }, [refetch]);
 
   return (
-    <View className="mt-safe flex-1 gap-3">
+    <View className="flex-1 gap-3">
       <LeadsFiltersBar
         filters={filters}
         onSearchChange={handleSearchChange}

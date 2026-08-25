@@ -4,6 +4,7 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -19,6 +20,7 @@ interface AuthContextType {
   user: User | null;
   userContext: UserContext | null;
   locations: LocationOption[];
+  franchises: string[];
   isLoading: boolean;
   error: Error | null;
 }
@@ -58,6 +60,15 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const userContextQuery = useUserContextQuery(authUserId);
   const locationsQuery = useLocationsQuery(userContextQuery.data);
 
+  const locations = locationsQuery.data ?? EMPTY_LOCATION_OPTIONS;
+
+  const franchises: string[] = useMemo(() => {
+    if (!locations?.length) {
+      return [];
+    }
+    return Array.from(new Set(locations.map((l) => l.franchise)));
+  }, [locations]);
+
   const isLoading =
     !isAuthRestored ||
     (!!authUserId && (userContextQuery.isLoading || locationsQuery.isLoading));
@@ -73,7 +84,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         session,
         user: session?.user ?? null,
         userContext: userContextQuery.data ?? null,
-        locations: locationsQuery.data ?? EMPTY_LOCATION_OPTIONS,
+        locations,
+        franchises,
         isLoading,
         error,
       }}

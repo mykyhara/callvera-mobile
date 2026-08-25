@@ -1,17 +1,12 @@
+import { GlobalFiltersBar } from "@/components/global-filters-bar";
 import { ScreenTemplate } from "@/components/screen-template";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
-import { useSignOut } from "@/features/auth/hooks/use-auth-mutations";
+import { DashboardMetricsGrid } from "@/features/dashboard/components/dashboard-metrics-grid";
 
 export default function DashboardScreen() {
-  const { mutate: handleSignOut } = useSignOut();
-
   return (
-    <ScreenTemplate contentContainerClassName="items-center justify-center gap-4">
-      <Text>Main screen placeholder</Text>
-      <Button onPress={() => handleSignOut()}>
-        <Text>Sign out</Text>
-      </Button>
+    <ScreenTemplate contentContainerClassName="gap-y-4" scrollable>
+      <GlobalFiltersBar />
+      <DashboardMetricsGrid />
     </ScreenTemplate>
   );
 }

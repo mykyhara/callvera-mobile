@@ -12,3 +12,18 @@ export function isAuthError(error: unknown): boolean {
   const code = (error as { code?: string }).code;
   return !!code;
 }
+
+type PlainObject = Record<string | number, unknown>;
+
+export function shallowEqual(objA: PlainObject, objB: PlainObject): boolean {
+  if (objA === objB) return true;
+
+  if (objA == null || objB == null) return false;
+
+  const keysA = Object.keys(objA);
+  const keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) return false;
+
+  return keysA.every((key) => objA[key] === objB[key]);
+}

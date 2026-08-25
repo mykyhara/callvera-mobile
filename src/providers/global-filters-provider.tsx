@@ -1,10 +1,12 @@
 import { createContext, useContext, useState } from "react";
 
 import { ALL_FRANCHISES, ALL_LOCATIONS, Direction } from "@/constants/filters";
+import { shallowEqual } from "@/lib/utils";
 import { GlobalFilters } from "@/types/api";
 
 interface GlobalFiltersContextType {
   filters: GlobalFilters;
+  isDefaultFilters: boolean;
   setFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
   updateFilter: <K extends keyof GlobalFilters>(
     key: K,
@@ -43,9 +45,17 @@ export const GlobalFiltersProvider = ({
     setFilters(DEFAULT_FILTERS);
   };
 
+  const isDefaultFilters = shallowEqual(filters, DEFAULT_FILTERS);
+
   return (
     <GlobalFiltersContext.Provider
-      value={{ filters, setFilters, updateFilter, resetFilters }}
+      value={{
+        filters,
+        isDefaultFilters,
+        setFilters,
+        updateFilter,
+        resetFilters,
+      }}
     >
       {children}
     </GlobalFiltersContext.Provider>

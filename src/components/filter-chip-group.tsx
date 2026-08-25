@@ -3,10 +3,11 @@ import { ScrollView, View } from "react-native";
 import { FilterOption } from "@/types/utils";
 
 import { Button } from "./ui/button";
+import { Label } from "./ui/label";
 import { Text } from "./ui/text";
 
 export interface FilterChipGroupProps<T> {
-  label: string;
+  label?: string;
   options: FilterOption<T>[];
   selected: T[];
   onToggle: (value: T) => void;
@@ -22,9 +23,7 @@ function FilterChipGroup<T>({
 
   return (
     <View className="gap-1">
-      <Text variant="muted" className="text-xs">
-        {label}
-      </Text>
+      {label && <Label>{label}</Label>}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View className="flex-row gap-2">
           {options.map((option) => {
