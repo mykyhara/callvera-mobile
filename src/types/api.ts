@@ -27,3 +27,10 @@ export type GlobalFilters = {
 };
 
 export type PageResult<T> = { data: T[]; count: number };
+
+export type LeadsFilters = {
+  search: string;
+  dispositions: string[];
+  sources: string[];
+  campaigns: string[];
+};
