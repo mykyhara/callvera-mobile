@@ -24,7 +24,12 @@ function FilterChipGroup<T>({
   return (
     <View className="gap-1">
       {label && <Label>{label}</Label>}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        className="-mx-4"
+        contentContainerClassName="px-4"
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      >
         <View className="flex-row gap-2">
           {options.map((option) => {
             const isSelected = selected.includes(option.value);

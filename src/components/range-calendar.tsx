@@ -5,17 +5,13 @@ import DateTimePicker, {
   useDefaultStyles,
 } from "react-native-ui-datepicker";
 
+import { DateRange } from "@/types/utils";
+
 dayjs.extend(utc);
 
-type SerializedDate = string | null;
-type SerializedDateRange = {
-  startDate: SerializedDate;
-  endDate: SerializedDate;
-};
-
 interface RangeCalendarProps {
-  value: SerializedDateRange;
-  onChange: (value: SerializedDateRange) => void;
+  value: DateRange;
+  onChange: (value: DateRange) => void;
 }
 
 export function RangeCalendar({
@@ -41,7 +37,7 @@ export function RangeCalendar({
   );
 }
 
-const serialize = (dt: DateType): SerializedDate =>
+const serialize = (dt: DateType): string | null =>
   dt !== null && dt !== undefined
     ? dayjs(dt).utc(true).format("YYYY-MM-DD")
     : (dt ?? null);

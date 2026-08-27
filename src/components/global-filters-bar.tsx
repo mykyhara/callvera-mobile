@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { PropsWithChildren, useCallback } from "react";
 import { View } from "react-native";
 
 import {
@@ -7,22 +7,35 @@ import {
   Direction,
   DirectionType,
 } from "@/constants/filters";
-import { useAuth } from "@/providers/auth-provider";
+import { cn } from "@/lib/utils";
 import { useGlobalFilters } from "@/providers/global-filters-provider";
-import { LocationOption } from "@/types/api";
-import { FilterOption } from "@/types/utils";
+import { GlobalFilters, LocationOption } from "@/types/api";
+import { DateRange, FilterOption } from "@/types/utils";
 
 import { DateRangePicker } from "./date-range-picker";
 import { DropdownPickerOption } from "./dropdown-picker";
 import { FilterChipGroup } from "./filter-chip-group";
-import { Button } from "./ui/button";
-import { Text } from "./ui/text";
 
-export const GlobalFiltersBar = () => {
-  const { locations, franchises } = useAuth();
-  const { filters, isDefaultFilters, setFilters, updateFilter, resetFilters } =
-    useGlobalFilters();
+type GlobalFiltersContext = ReturnType<typeof useGlobalFilters>;
 
+interface GlobalFiltersBarProps extends PropsWithChildren {
+  className?: string;
+  locations: LocationOption[];
+  franchises: string[];
+  filters: GlobalFilters;
+  setFilters: GlobalFiltersContext["setFilters"];
+  updateFilter: GlobalFiltersContext["updateFilter"];
+}
+
+export const GlobalFiltersBar = ({
+  children,
+  className,
+  locations,
+  franchises,
+  filters,
+  setFilters,
+  updateFilter,
+}: GlobalFiltersBarProps) => {
   const locationPickerOptions = mapLocationPickerOptions(locations);
   const franchisesPickerOptions = mapFranchisesPickerOptions(franchises);
 
@@ -38,8 +51,6 @@ export const GlobalFiltersBar = () => {
     updateFilter("direction", value);
   };
 
-  type DateRange = Pick<typeof filters, "startDate" | "endDate">;
-
   const handleDateRangeChange = useCallback(
     ({ startDate, endDate }: DateRange) => {
       setFilters((prev) => ({ ...prev, startDate, endDate }));
@@ -48,7 +59,7 @@ export const GlobalFiltersBar = () => {
   );
 
   return (
-    <View className="gap-y-2">
+    <View className={cn("gap-y-2", className)}>
       <FilterChipGroup
         label="Location"
         options={locationPickerOptions}
@@ -72,11 +83,7 @@ export const GlobalFiltersBar = () => {
         value={filters}
         onChange={handleDateRangeChange}
       />
-      {!isDefaultFilters && (
-        <Button variant="ghost" onPress={resetFilters}>
-          <Text>Clear global filters</Text>
-        </Button>
-      )}
+      {children}
     </View>
   );
 };

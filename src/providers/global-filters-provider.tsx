@@ -3,15 +3,13 @@ import { createContext, useContext, useState } from "react";
 import { ALL_FRANCHISES, ALL_LOCATIONS, Direction } from "@/constants/filters";
 import { shallowEqual } from "@/lib/utils";
 import { GlobalFilters } from "@/types/api";
+import { SetStateHandler, UpdateObjectHandler } from "@/types/utils";
 
 interface GlobalFiltersContextType {
   filters: GlobalFilters;
   isDefaultFilters: boolean;
-  setFilters: React.Dispatch<React.SetStateAction<GlobalFilters>>;
-  updateFilter: <K extends keyof GlobalFilters>(
-    key: K,
-    value: GlobalFilters[K],
-  ) => void;
+  setFilters: SetStateHandler<GlobalFilters>;
+  updateFilter: UpdateObjectHandler<GlobalFilters>;
   resetFilters: () => void;
 }
 
@@ -34,10 +32,7 @@ export const GlobalFiltersProvider = ({
 }) => {
   const [filters, setFilters] = useState<GlobalFilters>(DEFAULT_FILTERS);
 
-  const updateFilter = <K extends keyof GlobalFilters>(
-    key: K,
-    value: GlobalFilters[K],
-  ) => {
+  const updateFilter: UpdateObjectHandler<GlobalFilters> = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 

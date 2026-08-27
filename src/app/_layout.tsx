@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { PortalHost } from "@rn-primitives/portal";
 import { Stack } from "expo-router";
 import {
@@ -6,6 +7,7 @@ import {
   ThemeProvider,
 } from "expo-router/react-navigation";
 import { useColorScheme } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaListener } from "react-native-safe-area-context";
 import { Uniwind } from "uniwind";
 
@@ -28,8 +30,12 @@ export default function RootLayout() {
           <ThemeProvider
             value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
           >
-            <RootNavigator />
-            <PortalHost />
+            <GestureHandlerRootView className="flex-1">
+              <BottomSheetModalProvider>
+                <RootNavigator />
+                <PortalHost />
+              </BottomSheetModalProvider>
+            </GestureHandlerRootView>
           </ThemeProvider>
         </SafeAreaListener>
       </AuthProvider>
