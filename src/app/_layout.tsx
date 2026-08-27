@@ -6,6 +6,8 @@ import {
   ThemeProvider,
 } from "expo-router/react-navigation";
 import { useColorScheme } from "react-native";
+import { SafeAreaListener } from "react-native-safe-area-context";
+import { Uniwind } from "uniwind";
 
 import { AuthProvider, useAuth } from "@/providers/auth-provider";
 import { GlobalFiltersProvider } from "@/providers/global-filters-provider";
@@ -18,12 +20,18 @@ export default function RootLayout() {
   return (
     <QueryProvider>
       <AuthProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        <SafeAreaListener
+          onChange={({ insets }) => {
+            Uniwind.updateInsets(insets);
+          }}
         >
-          <RootNavigator />
-          <PortalHost />
-        </ThemeProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <RootNavigator />
+            <PortalHost />
+          </ThemeProvider>
+        </SafeAreaListener>
       </AuthProvider>
     </QueryProvider>
   );

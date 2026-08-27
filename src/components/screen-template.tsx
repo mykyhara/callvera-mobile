@@ -35,7 +35,7 @@ export const ScreenTemplate = ({
       <ScreenTemplateContainer
         className={cn("bg-background flex-1", className)}
         contentContainerClassName={cn(
-          "p-4 py-8 sm:py-4 sm:p-6 mt-safe",
+          "p-4 py-8 sm:py-4 sm:p-6 pt-safe",
           contentContainerClassName,
         )}
         scrollable={scrollable}
