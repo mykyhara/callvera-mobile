@@ -4,11 +4,11 @@ import { useMemo } from "react";
 import { ALL_FRANCHISES, ALL_LOCATIONS } from "@/constants/filters";
 import { DEFAULT_PAGE_SIZE } from "@/constants/leads";
 import { queries } from "@/lib/queries";
+import { isAuthError } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
 import { useGlobalFilters } from "@/providers/global-filters-provider";
 import { LeadsFilters } from "@/types/api";
 
-import { isAuthError } from "@/lib/utils";
 import { LeadsPage } from "../types";
 
 export function useLeadsList(leadsFilters: LeadsFilters) {

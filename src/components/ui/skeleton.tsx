@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { useEffect, type ComponentProps } from "react";
 import { View } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -6,19 +6,20 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import * as React from "react";
+
+import { cn } from "@/lib/utils";
 
 const duration = 1000;
 
 function Skeleton({
   className,
   ...props
-}: React.ComponentProps<typeof View> & React.RefAttributes<View>) {
+}: ComponentProps<typeof View> & React.RefAttributes<View>) {
   const sv = useSharedValue(1);
 
-  React.useEffect(() => {
+  useEffect(() => {
     sv.value = withRepeat(withTiming(0.5, { duration }), -1, true);
-  }, []);
+  }, [sv]);
 
   const style = useAnimatedStyle(
     () => ({

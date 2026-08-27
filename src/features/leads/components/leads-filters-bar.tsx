@@ -49,16 +49,19 @@ export function LeadsFiltersBar({
     [campaignOptions],
   );
 
-  const handleChangeText = useCallback((value: string) => {
-    setSearchText(value);
-    debouncedSearchChange(value);
-  }, []);
+  const handleChangeText = useCallback(
+    (value: string) => {
+      setSearchText(value);
+      debouncedSearchChange(value);
+    },
+    [debouncedSearchChange],
+  );
 
   const handleClear = useCallback(() => {
     debouncedSearchChange.cancel();
     setSearchText("");
     onClear();
-  }, []);
+  }, [debouncedSearchChange, onClear]);
 
   const hasActiveFilters =
     filters.dispositions.length > 0 ||

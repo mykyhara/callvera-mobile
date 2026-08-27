@@ -1,12 +1,12 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 
 import { clampPageSize } from "@/constants/leads";
+import { isAuthError } from "@/lib/utils";
 import { GlobalFilters, LeadsFilters, UserContext } from "@/types/api";
 
 import { listLeads, listMaskedLeads } from "./api";
-import { normalizeLead, normalizeMaskedLead } from "../utils/normalize";
 import { LeadsPage } from "../types";
-import { isAuthError } from "@/lib/utils";
+import { normalizeLead, normalizeMaskedLead } from "../utils/normalize";
 
 export type MaskedFallbackParams = {
   franchiseOrNull: string | null;

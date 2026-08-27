@@ -1,8 +1,9 @@
 import { ScrollView, View } from "react-native";
 
+import { FilterOption } from "@/types/utils";
+
 import { Button } from "./ui/button";
 import { Text } from "./ui/text";
-import { FilterOption } from "@/types/utils";
 
 export interface FilterChipGroupProps<T> {
   label: string;
