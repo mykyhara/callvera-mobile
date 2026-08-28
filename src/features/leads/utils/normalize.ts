@@ -1,3 +1,5 @@
+import { formatCreatedAt } from "@/lib/utils";
+
 import { LeadCall, LeadDetailsViewModel, LeadRow } from "../types";
 
 function extractMessageCount(value: unknown): number | null {
@@ -57,16 +59,6 @@ export function normalizeMaskedLead(row: any): LeadRow {
     messageCount: null,
     isMasked: true,
   };
-}
-
-export function formatCreatedAt(createdAt: string | null): string {
-  if (!createdAt) return "Unknown";
-  const date = new Date(createdAt);
-  if (Number.isNaN(date.getTime())) return "Unknown";
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
 }
 
 export function formatRevenue(revenue: number | null): string {

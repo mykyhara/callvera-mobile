@@ -13,6 +13,16 @@ export function isAuthError(error: unknown): boolean {
   return !!code;
 }
 
+export function formatCreatedAt(createdAt: string | null): string {
+  if (!createdAt) return "Unknown";
+  const date = new Date(createdAt);
+  if (Number.isNaN(date.getTime())) return "Unknown";
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
+}
+
 type PlainObject = Record<string | number, unknown>;
 
 export function shallowEqual(objA: PlainObject, objB: PlainObject): boolean {

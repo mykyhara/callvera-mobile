@@ -1,4 +1,4 @@
-import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 import { queries } from "@/lib/queries";

@@ -16,16 +16,9 @@ interface LeadDetailsProps {
 
 const MOCK_TAGS = ["Hot lead", "Follow up"];
 
-const MOCK_NOTES = [
-  { id: "mock-note-1", author: "System", text: "Awaiting notes API." },
-];
-
 function LeadDetails({ lead }: LeadDetailsProps) {
   const { userContext } = useAuth();
   const canManageNotesAndTags = !!userContext?.hasWriteAccess;
-
-  // Not implemented yet — wire up once the notes API exists.
-  const handleAddNote = useCallback(() => {}, []);
 
   // Not implemented yet — wire up once the tags API exists.
   const handleAddTag = useCallback(() => {}, []);
@@ -46,11 +39,7 @@ function LeadDetails({ lead }: LeadDetailsProps) {
             onAddTag={handleAddTag}
           />
 
-          <LeadDetailsNotes
-            notes={MOCK_NOTES}
-            canManageNotesAndTags={canManageNotesAndTags}
-            onAddNote={handleAddNote}
-          />
+          <LeadDetailsNotes leadId={lead.id} />
         </View>
       </ScrollView>
     </View>
