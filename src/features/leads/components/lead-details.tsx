@@ -1,7 +1,5 @@
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import { ScrollView, View } from "react-native";
-
-import { useAuth } from "@/providers/auth-provider";
 
 import { LeadDetailsViewModel } from "../types";
 import { LeadDetailsHeader } from "./lead-details-header";
@@ -14,15 +12,7 @@ interface LeadDetailsProps {
   lead: LeadDetailsViewModel;
 }
 
-const MOCK_TAGS = ["Hot lead", "Follow up"];
-
 function LeadDetails({ lead }: LeadDetailsProps) {
-  const { userContext } = useAuth();
-  const canManageNotesAndTags = !!userContext?.hasWriteAccess;
-
-  // Not implemented yet — wire up once the tags API exists.
-  const handleAddTag = useCallback(() => {}, []);
-
   return (
     <View className="flex-1">
       <LeadDetailsHeader lead={lead} />
@@ -33,11 +23,7 @@ function LeadDetails({ lead }: LeadDetailsProps) {
 
           <LeadDetailsRelatedCalls leadId={lead.id} />
 
-          <LeadDetailsTags
-            tags={MOCK_TAGS}
-            canManageNotesAndTags={canManageNotesAndTags}
-            onAddTag={handleAddTag}
-          />
+          <LeadDetailsTags leadId={lead.id} />
 
           <LeadDetailsNotes leadId={lead.id} />
         </View>
