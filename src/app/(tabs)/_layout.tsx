@@ -2,6 +2,7 @@ import { Tabs } from "expo-router";
 import {
   CircleUserIcon,
   LayoutDashboardIcon,
+  MessageSquareIcon,
   PhoneCallIcon,
   UsersIcon,
 } from "lucide-react-native";
@@ -24,6 +25,11 @@ const TABS = [
     name: "leads",
     title: "Leads",
     icon: UsersIcon,
+  },
+  {
+    name: "conversations",
+    title: "Conversations",
+    icon: MessageSquareIcon,
   },
   {
     name: "profile",

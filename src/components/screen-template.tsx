@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 
 interface ScreenTemplateProps extends ScreenTemplateContainerProps {
   statusBarProps?: StatusBarProps;
+  safeArea?: boolean;
 }
 
 export const ScreenTemplate = ({
@@ -23,6 +24,7 @@ export const ScreenTemplate = ({
   scrollViewProps,
   viewProps,
   statusBarProps,
+  safeArea = true,
 }: ScreenTemplateProps) => {
   const colorScheme = useColorScheme();
 
@@ -35,7 +37,8 @@ export const ScreenTemplate = ({
       <ScreenTemplateContainer
         className={cn("bg-background flex-1", className)}
         contentContainerClassName={cn(
-          "p-4 py-8 sm:py-4 sm:p-6 pt-safe",
+          "p-4 py-8 sm:py-4 sm:p-6",
+          safeArea && "pt-safe",
           contentContainerClassName,
         )}
         scrollable={scrollable}

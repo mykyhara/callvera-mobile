@@ -34,3 +34,17 @@ export type LeadsFilters = {
   sources: string[];
   campaigns: string[];
 };
+
+export type ConversationThread = {
+  lead_id: string;
+  from_number: string | null;
+  to_number: string | null;
+  name: string | null;
+  email: string | null;
+  disposition_current: string | null;
+  disposition_source: string | null;
+  source: string | null;
+  campaign: string | null;
+  lead_created_at: string | null;
+  total_count?: number;
+};
