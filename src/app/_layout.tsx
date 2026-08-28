@@ -43,6 +43,7 @@ const SCREENS = {
   LEADS: "/(tabs)/leads",
   LEAD_DETAILS: "lead/[id]",
   CONVERSATION: "conversation/[leadId]",
+  NOTIFICATIONS: "notifications/index",
 } as const;
 
 function RootNavigator() {
@@ -78,6 +79,10 @@ function RootNavigator() {
               title: "Conversation",
               headerBackButtonDisplayMode: "minimal",
             }}
+          />
+          <Stack.Screen
+            name={SCREENS.NOTIFICATIONS}
+            options={{ title: "Notifications", headerBackTitle: "Back" }}
           />
         </Stack.Protected>
       </Stack>
