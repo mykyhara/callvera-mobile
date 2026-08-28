@@ -4,6 +4,8 @@ import {
   CONVERSATION_PAGE_SIZE,
   ListConversationsArgs,
   listConversations,
+  listMessages,
+  parseConversationMessages,
   parseConversationThreads,
 } from "./api";
 import { ConversationsPage } from "../types";
@@ -29,5 +31,9 @@ export const conversationQueries = createQueryKeys("conversations", {
     queryKey: [args],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       fetchConversationsPage(args, pageParam),
+  }),
+  messages: (leadId: string) => ({
+    queryKey: [leadId],
+    queryFn: async () => parseConversationMessages(await listMessages(leadId)),
   }),
 });

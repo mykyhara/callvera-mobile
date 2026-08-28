@@ -1,4 +1,11 @@
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useRef } from "react";
+import { AppState } from "react-native";
 
 import { queries } from "@/lib/queries";
 import { isAuthError } from "@/lib/utils";
@@ -41,4 +48,38 @@ export function useConversationsInfiniteQuery({
     },
     retry: (failureCount, error) => !isAuthError(error) && failureCount < 2,
   });
+}
+
+export function useConversationMessagesQuery(leadId: string | undefined) {
+  const isFirstFocus = useRef(true);
+
+  const query = useQuery({
+    ...queries.conversations.messages(leadId ?? ""),
+    enabled: !!leadId,
+    staleTime: 0,
+    refetchOnMount: "always",
+    retry: (failureCount, error) => !isAuthError(error) && failureCount < 2,
+  });
+
+  const { refetch } = query;
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!leadId) return;
+
+      if (isFirstFocus.current) {
+        isFirstFocus.current = false;
+      } else {
+        void refetch();
+      }
+
+      const subscription = AppState.addEventListener("change", (state) => {
+        if (state === "active") void refetch();
+      });
+
+      return () => subscription.remove();
+    }, [leadId, refetch]),
+  );
+
+  return query;
 }

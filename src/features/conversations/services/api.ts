@@ -1,11 +1,23 @@
+import { QueryClient } from "@tanstack/react-query";
+
 import { ALL_FRANCHISES, ALL_LOCATIONS } from "@/constants/filters";
 import { supabase } from "@/lib/supabase";
-import { ConversationThread, GlobalFilters, LocationOption } from "@/types/api";
+import {
+  ConversationMessage,
+  ConversationThread,
+  GlobalFilters,
+  LocationOption,
+} from "@/types/api";
 
+import {
+  conversationMessageRowsSchema,
+  mapConversationMessage,
+} from "../schemas/conversation-message";
 import {
   conversationThreadRowsSchema,
   mapConversationThread,
 } from "../schemas/conversation-thread";
+import { ConversationsPage } from "../types";
 
 export const CONVERSATION_PAGE_SIZE = 25;
 
@@ -80,4 +92,44 @@ export async function listConversations(args: {
 
 export function parseConversationThreads(data: unknown): ConversationThread[] {
   return conversationThreadRowsSchema.parse(data).map(mapConversationThread);
+}
+
+export async function listMessages(leadId: string) {
+  const { data, error } = await supabase
+    .from("conversations_view")
+    .select(
+      "lead_id,from_number,to_number,direction,message,message_time," +
+        "created_at,conversation_status,disposition_source",
+    )
+    .eq("lead_id", leadId)
+    .eq("conversation_disabled", false)
+    .order("message_time", { ascending: true });
+  if (error) throw error;
+  return data ?? [];
+}
+
+export function parseConversationMessages(
+  data: unknown,
+): ConversationMessage[] {
+  return conversationMessageRowsSchema.parse(data).map(mapConversationMessage);
+}
+
+export function getConversationThread(
+  queryClient: QueryClient,
+  leadId: string,
+): ConversationThread | undefined {
+  const cachedQueries = queryClient.getQueriesData<{
+    pages: ConversationsPage[];
+  }>({
+    queryKey: ["conversations", "list"],
+  });
+
+  for (const [, data] of cachedQueries) {
+    const thread = data?.pages
+      ?.flatMap((page) => page.threads)
+      .find((row) => String(row.lead_id) === leadId);
+    if (thread) return thread;
+  }
+
+  return undefined;
 }

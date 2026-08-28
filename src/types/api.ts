@@ -48,3 +48,15 @@ export type ConversationThread = {
   lead_created_at: string | null;
   total_count?: number;
 };
+
+export type ConversationMessage = {
+  lead_id: string;
+  from_number: string | null;
+  to_number: string | null;
+  direction: string | null;
+  message: string | null;
+  message_time: string | null;
+  created_at: string | null;
+  conversation_status: string | null;
+  disposition_source: string | null;
+};

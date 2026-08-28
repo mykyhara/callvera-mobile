@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import {
   ActivityIndicator,
@@ -81,7 +82,7 @@ export function ConversationsList() {
         keyExtractor={(item) => String(item.lead_id)}
         renderItem={renderThreadCard}
         ItemSeparatorComponent={ThreadSeparator}
-        contentContainerClassName="pb-4 grow"
+        contentContainerClassName="grow"
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         onEndReachedThreshold={0.4}
@@ -125,7 +126,18 @@ export function ConversationsList() {
 }
 
 const renderThreadCard = ({ item }: { item: ConversationThread }) => (
-  <ConversationThreadCard thread={item} />
+  <ConversationThreadCard
+    thread={item}
+    onPress={() => {
+      router.navigate({
+        pathname: "/conversation/[leadId]",
+        params: {
+          leadId: String(item.lead_id),
+          name: item.name?.trim() || "Conversation",
+        },
+      });
+    }}
+  />
 );
 
 const ThreadSeparator = () => <View className="h-3" />;

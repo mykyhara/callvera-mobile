@@ -3,7 +3,7 @@ import { ConversationsList } from "@/features/conversations/components/conversat
 
 export default function ConversationsListScreen() {
   return (
-    <ScreenTemplate contentContainerClassName="flex-1">
+    <ScreenTemplate contentContainerClassName="flex-1 pb-0">
       <ConversationsList />
     </ScreenTemplate>
   );
