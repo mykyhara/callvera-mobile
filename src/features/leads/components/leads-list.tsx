@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 
@@ -6,11 +7,10 @@ import { DEFAULT_LEADS_FILTERS } from "@/constants/leads";
 import { cn } from "@/lib/utils";
 import { LeadsFilters } from "@/types/api";
 
-import { useLeadsList } from "../hooks/use-leads";
-import { LeadRow } from "../types";
 import { LeadsFiltersBar } from "./leads-filters-bar";
 import { LeadsListError, LeadsListSkeleton } from "./leads-list-states";
 import { LeadsTable } from "./leads-table";
+import { useLeadsList } from "../hooks/use-leads";
 
 type FilterField = "dispositions" | "sources" | "campaigns";
 
@@ -74,7 +74,9 @@ export function LeadsList() {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const handleOpenLead = useCallback((_lead: LeadRow) => {}, []);
+  const handleOpenLead = useCallback((id: string) => {
+    router.navigate({ pathname: "/lead/[id]", params: { id: String(id) } });
+  }, []);
 
   const handleRefresh = useCallback(() => {
     refetch();

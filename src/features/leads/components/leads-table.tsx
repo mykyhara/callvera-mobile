@@ -15,7 +15,7 @@ interface LeadsTableProps {
   onEndReached: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
-  onOpenLead: (lead: LeadRow) => void;
+  onOpenLead: (id: string) => void;
 }
 
 function renderSeparator() {

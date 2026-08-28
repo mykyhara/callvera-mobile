@@ -7,13 +7,13 @@ import { LeadRow } from "../types";
 
 interface LeadsTableRowProps {
   item: LeadRow;
-  onOpenLead: (lead: LeadRow) => void;
+  onOpenLead: (id: string) => void;
 }
 
 export function LeadsTableRow({ item, onOpenLead }: LeadsTableRowProps) {
   return (
-    <Pressable className="active:bg-muted" onPress={() => onOpenLead(item)}>
-      <Table.Row className="gap-0">
+    <Pressable className="active:bg-muted" onPress={() => onOpenLead(item.id)}>
+      <Table.Row className="gap-0" pointerEvents="none">
         <Table.Cell className="min-w-0 flex-[2.5]">
           <Text numberOfLines={1}>{item.name ?? "Unknown"}</Text>
           {item.phone && (

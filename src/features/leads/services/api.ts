@@ -1,5 +1,9 @@
+import { QueryClient } from "@tanstack/react-query";
+
 import { supabase } from "@/lib/supabase";
 import { UserContext, GlobalFilters } from "@/types/api";
+
+import { LeadRow, LeadsPage } from "../types";
 
 export async function listLeads(
   ctx: UserContext,
@@ -71,4 +75,38 @@ export async function listMaskedLeads({
     p_page: page,
     p_page_size: pageSize,
   });
+}
+
+export function getLeadDetails(
+  queryClient: QueryClient,
+  leadId: string,
+): LeadRow | undefined {
+  const cachedQueries = queryClient.getQueriesData<{ pages: LeadsPage[] }>({
+    queryKey: ["leads"],
+  });
+
+  for (const [, data] of cachedQueries) {
+    const row = data?.pages
+      ?.flatMap((page) => page.rows)
+      .find((row) => row.id === leadId);
+    if (row) return row;
+  }
+
+  return undefined;
+}
+
+export async function getLeadCalls(leadId: string) {
+  const { data, error } = await supabase
+    .from("calls")
+    .select(
+      "id,external_call_id,agent_id,call_time,call_duration,direction,call_type," +
+        "disposition_current,customer_name,from_number,to_number,call_successful," +
+        "call_recording_url,user_sentiment,call_summary,transcript,brand_name," +
+        "requested_event_created_time,disconnection_reason",
+    )
+    .eq("lead_id", leadId)
+    .eq("is_disabled", false)
+    .order("call_time", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
 }

@@ -41,6 +41,7 @@ const SCREENS = {
   APP_ROOT: "(tabs)",
   SIGN_IN: "(auth)/sign-in",
   LEADS: "/(tabs)/leads",
+  LEAD_DETAILS: "lead/[id]",
 } as const;
 
 function RootNavigator() {
@@ -65,6 +66,10 @@ function RootNavigator() {
           <Stack.Screen
             name={SCREENS.APP_ROOT}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={SCREENS.LEAD_DETAILS}
+            options={{ title: "Lead details", headerBackTitle: "Leads" }}
           />
         </Stack.Protected>
       </Stack>
