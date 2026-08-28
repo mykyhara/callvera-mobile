@@ -14,11 +14,8 @@ interface LeadDetailsProps {
   lead: LeadDetailsViewModel;
 }
 
-const MOCK_RELATED_CALLS = [
-  { id: "mock-call-1", label: "Inbound call", date: "2 days ago" },
-  { id: "mock-call-2", label: "Follow-up call", date: "5 days ago" },
-];
 const MOCK_TAGS = ["Hot lead", "Follow up"];
+
 const MOCK_NOTES = [
   { id: "mock-note-1", author: "System", text: "Awaiting notes API." },
 ];
@@ -41,7 +38,7 @@ function LeadDetails({ lead }: LeadDetailsProps) {
         <View className="gap-4 p-4 pb-8">
           <LeadSummary lead={lead} />
 
-          <LeadDetailsRelatedCalls calls={MOCK_RELATED_CALLS} />
+          <LeadDetailsRelatedCalls leadId={lead.id} />
 
           <LeadDetailsTags
             tags={MOCK_TAGS}

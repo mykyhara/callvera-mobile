@@ -1,5 +1,7 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+
+import { queries } from "@/lib/queries";
 
 import { getLeadDetails } from "../services/api";
 import { LeadDetailsViewModel } from "../types";
@@ -18,4 +20,11 @@ export function useLeadDetails(
 
     return toLeadDetails(row);
   }, [id, queryClient]);
+}
+
+export function useLeadCalls(leadId: string) {
+  return useQuery({
+    ...queries.leads.calls(leadId),
+    enabled: !!leadId,
+  });
 }

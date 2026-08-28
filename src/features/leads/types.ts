@@ -31,3 +31,9 @@ export type LeadDetailsViewModel = LeadRow & {
   dispositionLabel: string;
   sourceLabel: string;
 };
+
+export type LeadCall = {
+  id: string;
+  label: string;
+  dateLabel: string;
+};

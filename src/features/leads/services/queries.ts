@@ -4,9 +4,13 @@ import { clampPageSize } from "@/constants/leads";
 import { isAuthError } from "@/lib/utils";
 import { GlobalFilters, LeadsFilters, UserContext } from "@/types/api";
 
-import { listLeads, listMaskedLeads } from "./api";
+import { getLeadCalls, listLeads, listMaskedLeads } from "./api";
 import { LeadsPage } from "../types";
-import { normalizeLead, normalizeMaskedLead } from "../utils/normalize";
+import {
+  normalizeLead,
+  normalizeLeadCall,
+  normalizeMaskedLead,
+} from "../utils/normalize";
 
 export type MaskedFallbackParams = {
   franchiseOrNull: string | null;
@@ -81,5 +85,12 @@ export const leadsQueries = createQueryKeys("leads", {
         pageParam,
         pageSize,
       ),
+  }),
+  calls: (leadId: string) => ({
+    queryKey: [leadId],
+    queryFn: async () => {
+      const rows = await getLeadCalls(leadId);
+      return rows.map(normalizeLeadCall);
+    },
   }),
 });

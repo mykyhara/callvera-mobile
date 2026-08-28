@@ -1,4 +1,4 @@
-import { LeadDetailsViewModel, LeadRow } from "../types";
+import { LeadCall, LeadDetailsViewModel, LeadRow } from "../types";
 
 function extractMessageCount(value: unknown): number | null {
   if (typeof value === "number") return value;
@@ -75,6 +75,16 @@ export function formatRevenue(revenue: number | null): string {
     currency: "USD",
     maximumFractionDigits: 0,
   }).format(revenue ?? 0);
+}
+
+export function normalizeLeadCall(row: any): LeadCall {
+  const label =
+    row.call_type ?? (row.direction ? `${row.direction} call` : "Call");
+  return {
+    id: String(row.id),
+    label,
+    dateLabel: formatCreatedAt(row.call_time ?? null),
+  };
 }
 
 export function toLeadDetails(row: LeadRow): LeadDetailsViewModel {
