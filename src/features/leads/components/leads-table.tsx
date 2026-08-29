@@ -2,11 +2,10 @@ import { memo, useCallback } from "react";
 import { FlatList, ListRenderItemInfo, RefreshControl } from "react-native";
 
 import { Table } from "@/components/ui/table";
-import { Text } from "@/components/ui/text";
 
 import { LeadRow } from "../types";
 import { LeadsListEmpty, LeadsListFooter } from "./leads-list-states";
-import { LeadsTableRow } from "./leads-table-row";
+import { LeadsTableHeaderRow, LeadsTableRow } from "./leads-table-row";
 
 interface LeadsTableProps {
   rows: LeadRow[];
@@ -42,19 +41,7 @@ function LeadsTableComponent({
 
   return (
     <Table.Root className="flex-1 gap-2">
-      <Table.Header>
-        <Table.Row className="gap-0">
-          <Table.Head className="min-w-0 flex-[2] self-start">
-            <Text numberOfLines={1}>Lead</Text>
-          </Table.Head>
-          <Table.Head className="min-w-0 flex-[3] self-start">
-            <Text numberOfLines={1}>Disposition</Text>
-          </Table.Head>
-          <Table.Head className="w-20 flex-none self-start">
-            <Text numberOfLines={1}>Messages</Text>
-          </Table.Head>
-        </Table.Row>
-      </Table.Header>
+      <LeadsTableHeaderRow />
 
       <FlatList
         data={rows}

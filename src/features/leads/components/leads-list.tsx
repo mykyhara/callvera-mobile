@@ -1,21 +1,20 @@
 import { router } from "expo-router";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { View } from "react-native";
 
 import { Text } from "@/components/ui/text";
-import { DEFAULT_LEADS_FILTERS } from "@/constants/leads";
 import { cn } from "@/lib/utils";
-import { LeadsFilters } from "@/types/api";
 
 import { LeadsFiltersBar } from "./leads-filters-bar";
 import { LeadsListError, LeadsListSkeleton } from "./leads-list-states";
 import { LeadsTable } from "./leads-table";
-import { useLeadsList } from "../hooks/use-leads";
+import { useInfiniteLeads } from "../hooks/use-leads";
+import { useLeadsFilters } from "../hooks/use-leads-filters";
 
 type FilterField = "dispositions" | "sources" | "campaigns";
 
 export function LeadsList() {
-  const [filters, setFilters] = useState<LeadsFilters>(DEFAULT_LEADS_FILTERS);
+  const { filters, updateFilter, setFilters, resetFilters } = useLeadsFilters();
 
   const {
     data,
@@ -28,7 +27,7 @@ export function LeadsList() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useLeadsList(filters);
+  } = useInfiniteLeads(filters);
 
   const rows = useMemo(
     () => data?.pages.flatMap((page) => page.rows) ?? [],
@@ -52,23 +51,25 @@ export function LeadsList() {
     };
   }, [rows]);
 
-  const handleSearchChange = useCallback((value: string) => {
-    setFilters((prev) => ({ ...prev, search: value.trim() }));
-  }, []);
+  const handleSearchChange = useCallback(
+    (value: string) => {
+      updateFilter("search", value.trim());
+    },
+    [updateFilter],
+  );
 
-  const handleToggle = useCallback((field: FilterField, value: string) => {
-    setFilters((prev) => {
-      const current = prev[field];
-      const next = current.includes(value)
-        ? current.filter((v) => v !== value)
-        : [...current, value];
-      return { ...prev, [field]: next };
-    });
-  }, []);
-
-  const handleClear = useCallback(() => {
-    setFilters(DEFAULT_LEADS_FILTERS);
-  }, []);
+  const handleToggle = useCallback(
+    (field: FilterField, value: string) => {
+      setFilters((prev) => {
+        const current = prev[field];
+        const next = current.includes(value)
+          ? current.filter((v) => v !== value)
+          : [...current, value];
+        return { ...prev, [field]: next };
+      });
+    },
+    [setFilters],
+  );
 
   const handleEndReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
@@ -91,7 +92,7 @@ export function LeadsList() {
         sourceOptions={options.sources}
         campaignOptions={options.campaigns}
         onToggle={handleToggle}
-        onClear={handleClear}
+        onClear={resetFilters}
       />
 
       {isMasked && (

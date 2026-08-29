@@ -36,3 +36,21 @@ export function LeadsTableRow({ item, onOpenLead }: LeadsTableRowProps) {
     </Pressable>
   );
 }
+
+export function LeadsTableHeaderRow() {
+  return (
+    <Table.Header>
+      <Table.Row className="gap-0">
+        <Table.Head className="min-w-0 flex-2 self-start">
+          <Text numberOfLines={1}>Lead</Text>
+        </Table.Head>
+        <Table.Head className="min-w-0 flex-3 self-start">
+          <Text numberOfLines={1}>Disposition</Text>
+        </Table.Head>
+        <Table.Head className="w-20 flex-none self-start">
+          <Text numberOfLines={1}>Messages</Text>
+        </Table.Head>
+      </Table.Row>
+    </Table.Header>
+  );
+}

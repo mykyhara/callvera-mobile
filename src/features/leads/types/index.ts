@@ -37,3 +37,10 @@ export type LeadCall = {
   label: string;
   dateLabel: string;
 };
+
+export type LeadsFilters = {
+  search: string;
+  dispositions: string[];
+  sources: string[];
+  campaigns: string[];
+};

@@ -7,9 +7,9 @@ import { notificationsQueries } from "@/features/notifications/services/queries"
 import { userQueries } from "@/features/user/services/queries";
 
 export const queries = mergeQueryKeys(
-  dashboardQueries,
-  userQueries,
-  leadsQueries,
   conversationQueries,
+  dashboardQueries,
+  leadsQueries,
   notificationsQueries,
+  userQueries,
 );

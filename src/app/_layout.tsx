@@ -46,7 +46,6 @@ export default function RootLayout() {
 const SCREENS = {
   APP_ROOT: "(tabs)",
   SIGN_IN: "(auth)/sign-in",
-  LEADS: "/(tabs)/leads",
   LEAD_DETAILS: "lead/[id]",
   CONVERSATION: "conversation/[leadId]",
   NOTIFICATIONS: "notifications/index",

@@ -6,7 +6,8 @@ import { FilterChipGroup } from "@/components/filter-chip-group";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
-import { LeadsFilters } from "@/types/api";
+
+import { LeadsFilters } from "../types";
 
 type FilterField = "dispositions" | "sources" | "campaigns";
 

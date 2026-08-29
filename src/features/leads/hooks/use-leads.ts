@@ -1,33 +1,19 @@
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 
-import { ALL_FRANCHISES, ALL_LOCATIONS } from "@/constants/filters";
-import { DEFAULT_PAGE_SIZE } from "@/constants/leads";
+import { DEFAULT_PAGE_SIZE } from "@/constants/page";
+import { useMaskedFallback } from "@/hooks/use-masked-fallback";
 import { queries } from "@/lib/queries";
 import { isAuthError } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
 import { useGlobalFilters } from "@/providers/global-filters-provider";
-import { LeadsFilters } from "@/types/api";
 
-import { LeadsPage } from "../types";
+import { LeadsFilters, LeadsPage } from "../types";
 
-export function useLeadsList(leadsFilters: LeadsFilters) {
+export function useInfiniteLeads(leadsFilters: LeadsFilters) {
   const { userContext, locations } = useAuth();
   const { filters: globalFilters } = useGlobalFilters();
 
-  const maskedFallback = useMemo(() => {
-    const location =
-      globalFilters.locationId === ALL_LOCATIONS
-        ? null
-        : locations.find((l) => l.locationId === globalFilters.locationId);
-    return {
-      franchiseOrNull:
-        globalFilters.franchise === ALL_FRANCHISES
-          ? null
-          : globalFilters.franchise,
-      locationNameOrNull: location?.originalName ?? null,
-    };
-  }, [globalFilters.locationId, globalFilters.franchise, locations]);
+  const maskedFallback = useMaskedFallback(globalFilters, locations);
 
   return useInfiniteQuery({
     ...queries.leads.list(

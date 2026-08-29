@@ -12,7 +12,7 @@ export function LeadsListSkeleton() {
     <Table.Root className="flex-1">
       <Table.Header>
         <Table.Row>
-          <Table.Head className="flex-[2]">
+          <Table.Head className="flex-2">
             <Text>Lead</Text>
           </Table.Head>
           <Table.Head>
@@ -31,7 +31,7 @@ export function LeadsListSkeleton() {
         {Array.from({ length: SKELETON_ROW_COUNT }).map((_, index) => (
           <View key={index}>
             <Table.Row>
-              <Table.Cell className="flex-[2]">
+              <Table.Cell className="flex-2">
                 <Skeleton className="h-3 w-2/3" />
               </Table.Cell>
               <Table.Cell>

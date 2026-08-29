@@ -1,11 +1,14 @@
 import { QueryClient } from "@tanstack/react-query";
 
+import { ALL_LOCATIONS, Direction } from "@/constants/filters";
 import { supabase } from "@/lib/supabase";
-import { UserContext, GlobalFilters } from "@/types/api";
+import { clampPageSize, isAuthError } from "@/lib/utils";
+import { GlobalFilters, MaskedFallbackParams, UserContext } from "@/types/api";
 
-import { LeadRow, LeadsPage } from "../types";
+import { LeadRow, LeadsFilters, LeadsPage } from "../types";
+import { normalizeLead, normalizeMaskedLead } from "../utils/normalize";
 
-export async function listLeads(
+async function listLeads(
   ctx: UserContext,
   f: GlobalFilters,
   opts: {
@@ -32,8 +35,8 @@ export async function listLeads(
     )
     .eq("is_disabled", false)
     .eq("account_id", ctx.accountId);
-  if (f.locationId !== "all-locations") q = q.eq("location_id", f.locationId);
-  if (f.direction !== "all") q = q.eq("direction", f.direction);
+  if (f.locationId !== ALL_LOCATIONS) q = q.eq("location_id", f.locationId);
+  if (f.direction !== Direction.ALL) q = q.eq("direction", f.direction);
   if (f.startDate && f.endDate)
     q = q.gte("created_at", f.startDate).lte("created_at", f.endDate);
   if (opts.dispositions?.length)
@@ -53,7 +56,7 @@ export async function listLeads(
   return { data: data ?? [], count: count ?? 0 };
 }
 
-export async function listMaskedLeads({
+async function listMaskedLeads({
   selectedFranchiseOrNull,
   selectedOriginalLocationNameOrNull,
   filters,
@@ -109,4 +112,54 @@ export async function getLeadCalls(leadId: string) {
     .order("call_time", { ascending: false });
   if (error) throw error;
   return data ?? [];
+}
+
+export async function fetchLeadsPageWithFallback(
+  ctx: UserContext,
+  globalFilters: GlobalFilters,
+  leadsFilters: LeadsFilters,
+  maskedFallback: MaskedFallbackParams,
+  page: number,
+  pageSize: number,
+): Promise<LeadsPage> {
+  const size = clampPageSize(pageSize);
+
+  try {
+    const { data, count } = await listLeads(ctx, globalFilters, {
+      page,
+      pageSize: size,
+      search: leadsFilters.search,
+      dispositions: leadsFilters.dispositions,
+      sources: leadsFilters.sources,
+      campaigns: leadsFilters.campaigns,
+    });
+
+    return {
+      rows: data.map(normalizeLead),
+      page,
+      pageSize: size,
+      totalCount: count,
+      isMasked: false,
+    };
+  } catch (error) {
+    if (!isAuthError(error)) throw error;
+
+    const { data, error: maskedError } = await listMaskedLeads({
+      selectedFranchiseOrNull: maskedFallback.franchiseOrNull,
+      selectedOriginalLocationNameOrNull: maskedFallback.locationNameOrNull,
+      filters: globalFilters,
+      page,
+      pageSize: size,
+    });
+    if (maskedError) throw maskedError;
+
+    const rows = data ?? [];
+    return {
+      rows: rows.map(normalizeMaskedLead),
+      page,
+      pageSize: size,
+      totalCount: rows[0]?.total_count ?? 0,
+      isMasked: true,
+    };
+  }
 }
