@@ -62,12 +62,13 @@ export function ConversationTimeline({ leadId }: ConversationTimelineProps) {
   return (
     <FlatList
       inverted={inverted}
-      style={{ flex: 1 }}
       data={timeline}
+      showsVerticalScrollIndicator={false}
       keyExtractor={getMessageKey}
       renderItem={renderMessage}
       ItemSeparatorComponent={MessageSeparator}
-      contentContainerClassName="grow pt-2"
+      className="flex-1"
+      contentContainerClassName="grow py-4"
       keyboardShouldPersistTaps="handled"
       refreshControl={
         <RefreshControl

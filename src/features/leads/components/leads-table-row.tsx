@@ -14,7 +14,7 @@ export function LeadsTableRow({ item, onOpenLead }: LeadsTableRowProps) {
   return (
     <Pressable className="active:bg-muted" onPress={() => onOpenLead(item.id)}>
       <Table.Row className="gap-0" pointerEvents="none">
-        <Table.Cell className="min-w-0 flex-[2.5]">
+        <Table.Cell className="flex-2">
           <Text numberOfLines={1}>{item.name ?? "Unknown"}</Text>
           {item.phone && (
             <Text numberOfLines={1} variant="muted" className="text-xs">
@@ -22,13 +22,13 @@ export function LeadsTableRow({ item, onOpenLead }: LeadsTableRowProps) {
             </Text>
           )}
         </Table.Cell>
-        <Table.Cell className="min-w-0 flex-[2.5]">
+        <Table.Cell className="flex-3">
           <Text numberOfLines={1} className="text-sm">
             {item.disposition ?? "—"}
           </Text>
         </Table.Cell>
         <Table.Cell className="w-20 flex-none">
-          <Text numberOfLines={1} className="text-sm">
+          <Text numberOfLines={1} className="text-center text-sm">
             {item.messageCount ?? "—"}
           </Text>
         </Table.Cell>
@@ -41,10 +41,10 @@ export function LeadsTableHeaderRow() {
   return (
     <Table.Header>
       <Table.Row className="gap-0">
-        <Table.Head className="min-w-0 flex-2 self-start">
+        <Table.Head className="flex-2 self-start">
           <Text numberOfLines={1}>Lead</Text>
         </Table.Head>
-        <Table.Head className="min-w-0 flex-3 self-start">
+        <Table.Head className="flex-3 self-start">
           <Text numberOfLines={1}>Disposition</Text>
         </Table.Head>
         <Table.Head className="w-20 flex-none self-start">

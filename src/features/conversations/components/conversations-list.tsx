@@ -7,9 +7,9 @@ import {
   View,
 } from "react-native";
 
+import { ClearFiltersButton } from "@/components/clear-filters-button";
 import { ErrorText } from "@/components/error-text";
 import { Text } from "@/components/ui/text";
-import { ALL_FRANCHISES, ALL_LOCATIONS } from "@/constants/filters";
 import { useConversationsInfiniteQuery } from "@/features/conversations/hooks/use-conversation-queries";
 import { useAuth } from "@/providers/auth-provider";
 import { useGlobalFilters } from "@/providers/global-filters-provider";
@@ -20,7 +20,7 @@ import { ConversationThreadCard } from "./conversation-thread-card";
 
 export function ConversationsList() {
   const { locations } = useAuth();
-  const { filters } = useGlobalFilters();
+  const { filters, isDefault, resetFilters } = useGlobalFilters();
   const [search, setSearch] = useState("");
 
   const hasLocations = locations.length > 0;
@@ -56,13 +56,14 @@ export function ConversationsList() {
     isPending,
     hasError: !!error,
     search,
-    hasActiveFilters:
-      filters.franchise !== ALL_FRANCHISES ||
-      filters.locationId !== ALL_LOCATIONS ||
-      !!filters.startDate ||
-      !!filters.endDate,
+    hasActiveFilters: !isDefault,
     hasResults: threads.length > 0,
   });
+
+  const handleClearAllFilters = () => {
+    resetFilters();
+    setSearch("");
+  };
 
   return (
     <View className="flex-1 gap-3">
@@ -105,11 +106,16 @@ export function ConversationsList() {
               <ActivityIndicator />
             </View>
           ) : (
-            <View className="py-12">
-              <Text variant="muted" className="text-center">
-                {listEmptyMessage}
-              </Text>
-            </View>
+            <>
+              <View className="p-10">
+                <Text variant="muted" className="text-center">
+                  {listEmptyMessage}
+                </Text>
+              </View>
+              {!isDefault && (
+                <ClearFiltersButton onPress={handleClearAllFilters} />
+              )}
+            </>
           )
         }
         ListFooterComponent={

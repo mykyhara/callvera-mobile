@@ -25,7 +25,7 @@ export const GlobalFiltersBottomSheet = ({
         <GlobalFiltersBar {...authCtx} {...filtersCtx}>
           <ClearFiltersButton
             onPress={filtersCtx.resetFilters}
-            disabled={filtersCtx.isDefaultFilters}
+            disabled={filtersCtx.isDefault}
           />
         </GlobalFiltersBar>
       </BottomSheetScrollView>

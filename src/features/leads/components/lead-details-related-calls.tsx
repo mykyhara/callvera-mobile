@@ -1,6 +1,9 @@
-import { memo } from "react";
-import { ActivityIndicator, ScrollView, View } from "react-native";
+import { router } from "expo-router";
+import { Fragment, memo } from "react";
+import { ActivityIndicator, Pressable, ScrollView } from "react-native";
 
+import { CardRow } from "@/components/card-row";
+import { CardSeparator } from "@/components/card-separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 
@@ -15,21 +18,30 @@ interface LeadDetailsRelatedCallsListProps {
   calls: LeadCall[];
 }
 
-function LeadDetailsRelatedCallsListComponent(
-  props: LeadDetailsRelatedCallsListProps,
-) {
+function LeadDetailsRelatedCallsListComponent({
+  calls,
+}: LeadDetailsRelatedCallsListProps) {
   return (
-    <ScrollView className="flex-1">
-      {props.calls.map((call, index) => (
-        <View
-          key={call.id}
-          className={"border-border flex-row justify-between border-b py-2"}
-        >
-          <Text className="text-sm">{call.label}</Text>
-          <Text variant="muted" className="text-sm">
-            {call.dateLabel}
-          </Text>
-        </View>
+    <ScrollView>
+      {calls.map((call, index) => (
+        <Fragment key={call.id}>
+          {index > 0 && <CardSeparator />}
+          <Pressable
+            className="active:bg-accent rounded-lg"
+            onPress={() =>
+              router.navigate({
+                pathname: "/call/[id]",
+                params: { id: call.id },
+              })
+            }
+          >
+            <CardRow
+              label={call.label}
+              content={call.dateLabel}
+              contentContainerClassName="items-end"
+            />
+          </Pressable>
+        </Fragment>
       ))}
     </ScrollView>
   );

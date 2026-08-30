@@ -33,8 +33,8 @@ export default function RootLayout() {
             <GestureHandlerRootView className="flex-1">
               <BottomSheetModalProvider>
                 <RootNavigator />
-                <PortalHost />
               </BottomSheetModalProvider>
+              <PortalHost />
             </GestureHandlerRootView>
           </ThemeProvider>
         </SafeAreaListener>
@@ -77,7 +77,7 @@ function RootNavigator() {
           />
           <Stack.Screen
             name={SCREENS.LEAD_DETAILS}
-            options={{ title: "Lead details", headerBackTitle: "Leads" }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name={SCREENS.CALL_DETAILS}
@@ -85,14 +85,11 @@ function RootNavigator() {
           />
           <Stack.Screen
             name={SCREENS.CONVERSATION}
-            options={{
-              title: "Conversation",
-              headerBackButtonDisplayMode: "minimal",
-            }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name={SCREENS.NOTIFICATIONS}
-            options={{ title: "Notifications", headerBackTitle: "Back" }}
+            options={{ headerShown: false }}
           />
         </Stack.Protected>
       </Stack>

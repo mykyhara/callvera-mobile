@@ -78,6 +78,7 @@ export function LeadsFiltersBar({
         autoCapitalize="none"
         autoCorrect={false}
         returnKeyType="search"
+        clearButtonMode="always"
       />
 
       <FilterChipGroup

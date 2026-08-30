@@ -1,9 +1,9 @@
 import { NotesList } from "@/features/notes/components/notes-list";
 
-interface LeadDetailsNotesProps {
-  leadId: string;
+interface CallDetailsNotesProps {
+  callId: string;
 }
 
-export function LeadDetailsNotes({ leadId }: LeadDetailsNotesProps) {
-  return <NotesList objectType="lead" objectId={leadId} />;
+export function CallDetailsNotes({ callId }: CallDetailsNotesProps) {
+  return <NotesList objectType="call" objectId={callId} />;
 }

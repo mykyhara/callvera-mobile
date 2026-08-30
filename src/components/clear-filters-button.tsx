@@ -3,7 +3,7 @@ import { Text } from "./ui/text";
 
 interface ClearFiltersButtonProps {
   label?: string;
-  onPress?: () => void;
+  onPress: () => void;
   disabled?: boolean;
 }
 

@@ -1,6 +1,7 @@
 import { memo, useCallback } from "react";
 import { FlatList, ListRenderItemInfo, RefreshControl } from "react-native";
 
+import { ClearFiltersButton } from "@/components/clear-filters-button";
 import { Table } from "@/components/ui/table";
 
 import { LeadRow } from "../types";
@@ -15,13 +16,12 @@ interface LeadsTableProps {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   onOpenLead: (id: string) => void;
+  onClearFilters: () => void;
 }
 
 function renderSeparator() {
   return <Table.Separator />;
 }
-
-const emptyComponent = <LeadsListEmpty />;
 
 function LeadsTableComponent({
   rows,
@@ -31,6 +31,7 @@ function LeadsTableComponent({
   hasNextPage,
   isFetchingNextPage,
   onOpenLead,
+  onClearFilters,
 }: LeadsTableProps) {
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<LeadRow>) => (
@@ -40,7 +41,7 @@ function LeadsTableComponent({
   );
 
   return (
-    <Table.Root className="flex-1 gap-2">
+    <Table.Root className="flex-1">
       <LeadsTableHeaderRow />
 
       <FlatList
@@ -52,7 +53,12 @@ function LeadsTableComponent({
         ItemSeparatorComponent={renderSeparator}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
-        ListEmptyComponent={emptyComponent}
+        ListEmptyComponent={
+          <>
+            <LeadsListEmpty />
+            <ClearFiltersButton onPress={onClearFilters} />
+          </>
+        }
         ListFooterComponent={
           <LeadsListFooter
             isFetchingNextPage={isFetchingNextPage}

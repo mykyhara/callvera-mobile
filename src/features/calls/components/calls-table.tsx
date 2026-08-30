@@ -1,6 +1,7 @@
 import { memo, useCallback } from "react";
 import { FlatList, ListRenderItemInfo, RefreshControl } from "react-native";
 
+import { ClearFiltersButton } from "@/components/clear-filters-button";
 import { Table } from "@/components/ui/table";
 
 import { CallRow } from "../types";
@@ -15,13 +16,12 @@ interface CallsTableProps {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   onOpenCall: (id: string) => void;
+  onClearFilters: () => void;
 }
 
 function renderSeparator() {
   return <Table.Separator />;
 }
-
-const emptyComponent = <CallsListEmpty />;
 
 function CallsTableComponent({
   rows,
@@ -31,6 +31,7 @@ function CallsTableComponent({
   hasNextPage,
   isFetchingNextPage,
   onOpenCall,
+  onClearFilters,
 }: CallsTableProps) {
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<CallRow>) => (
@@ -52,7 +53,12 @@ function CallsTableComponent({
         ItemSeparatorComponent={renderSeparator}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
-        ListEmptyComponent={emptyComponent}
+        ListEmptyComponent={
+          <>
+            <CallsListEmpty />
+            <ClearFiltersButton onPress={onClearFilters} />
+          </>
+        }
         ListFooterComponent={
           <CallsListFooter
             isFetchingNextPage={isFetchingNextPage}

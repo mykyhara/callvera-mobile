@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 
-import { ALL_FRANCHISES, ALL_LOCATIONS } from "@/constants/filters";
+import { ClearFiltersButton } from "@/components/clear-filters-button";
 import { cn, isAuthError } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
 import { useGlobalFilters } from "@/providers/global-filters-provider";
@@ -17,7 +17,6 @@ import {
 } from "../hooks/use-notifications";
 import { Notification } from "../types";
 import { NotificationCard } from "./notification-card";
-import { NotificationsFiltersBar } from "./notifications-filters-bar";
 import {
   NotificationsListEmpty,
   NotificationsListError,
@@ -27,7 +26,7 @@ import {
 
 export function NotificationsList() {
   const { locations } = useAuth();
-  const { filters } = useGlobalFilters();
+  const { isDefault: isDefaultFilters, resetFilters } = useGlobalFilters();
   const hasLocations = locations.length > 0;
 
   const {
@@ -99,17 +98,13 @@ export function NotificationsList() {
     hasLocations,
     isPending,
     hasError: isError,
-    hasActiveFilters:
-      filters.franchise !== ALL_FRANCHISES ||
-      filters.locationId !== ALL_LOCATIONS,
+    hasActiveFilters: !isDefaultFilters,
     hasResults: rows.length > 0,
     isAccessDenied: isAuthError(error),
   });
 
   return (
     <View className="flex-1 gap-3">
-      <NotificationsFiltersBar />
-
       {isPending ? (
         <NotificationsListSkeleton />
       ) : isError && rows.length === 0 ? (
@@ -141,7 +136,12 @@ export function NotificationsList() {
               />
             }
             ListEmptyComponent={
-              <NotificationsListEmpty message={emptyMessage} />
+              <>
+                <NotificationsListEmpty message={emptyMessage} />
+                {!isDefaultFilters && (
+                  <ClearFiltersButton onPress={resetFilters} />
+                )}
+              </>
             }
             ListFooterComponent={
               <NotificationsListFooter

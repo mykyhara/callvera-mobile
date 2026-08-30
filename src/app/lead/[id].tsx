@@ -14,7 +14,7 @@ export default function LeadDetailsScreen() {
   const { data: lead, isLoading } = useLeadDetails(id);
 
   return (
-    <ScreenTemplate className="gap-y-4">
+    <ScreenTemplate contentContainerClassName="gap-y-4 pb-0">
       <ScreenHeader title="Lead details" withBackButton />
       {isLoading ? (
         <LeadDetailsLoading />

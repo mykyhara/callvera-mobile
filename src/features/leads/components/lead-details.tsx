@@ -17,16 +17,17 @@ function LeadDetails({ lead }: LeadDetailsProps) {
     <View className="flex-1">
       <LeadDetailsHeader lead={lead} />
 
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="gap-4 p-4 pb-8">
-          <LeadSummary lead={lead} />
+      <ScrollView
+        contentContainerClassName="gap-4 pt-4 pb-safe"
+        showsVerticalScrollIndicator={false}
+      >
+        <LeadSummary lead={lead} />
 
-          <LeadDetailsRelatedCalls leadId={lead.id} />
+        <LeadDetailsRelatedCalls leadId={lead.id} />
 
-          <LeadDetailsTags leadId={lead.id} />
+        <LeadDetailsTags leadId={lead.id} />
 
-          <LeadDetailsNotes leadId={lead.id} />
-        </View>
+        <LeadDetailsNotes leadId={lead.id} />
       </ScrollView>
     </View>
   );

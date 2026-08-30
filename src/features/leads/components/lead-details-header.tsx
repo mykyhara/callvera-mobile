@@ -11,7 +11,7 @@ interface LeadDetailsHeaderProps {
 
 export function LeadDetailsHeader({ lead }: LeadDetailsHeaderProps) {
   return (
-    <View className="bg-card border-border pt-safe -mx-4 gap-1 border-b px-4 pb-4 sm:-mx-2 sm:px-2">
+    <View className="bg-card border-b-border -mx-4 gap-1 border-b px-4 pb-4">
       <Text variant="h3">{lead.name ?? "Unknown lead"}</Text>
       <Text variant="muted" className="text-sm">
         {lead.dispositionLabel}

@@ -19,7 +19,7 @@ export const BackButton = ({ alwaysVisible = false }: BackButtonProps) => {
       onPress={router.back}
       className="size-10 rounded-full"
     >
-      <Icon as={ChevronLeftIcon} />
+      <Icon as={ChevronLeftIcon} size={24} />
     </Button>
   );
 };

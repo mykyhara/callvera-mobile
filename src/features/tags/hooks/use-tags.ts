@@ -1,15 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { queries } from "@/lib/queries";
 import { isAuthError } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
 
 import { addTag, removeTag } from "../services/api";
-import { tagsQueries } from "../services/queries";
 import { Tag } from "../types";
 
 export function useGetTags(leadId: string) {
   const query = useQuery({
-    ...tagsQueries.list(leadId),
+    ...queries.tags.list(leadId),
     enabled: !!leadId,
     retry: (failureCount, error) => !isAuthError(error) && failureCount < 2,
   });
@@ -20,7 +20,7 @@ export function useGetTags(leadId: string) {
 export function useAddTag(leadId: string) {
   const { userContext } = useAuth();
   const queryClient = useQueryClient();
-  const queryKey = tagsQueries.list(leadId).queryKey;
+  const queryKey = queries.tags.list(leadId).queryKey;
 
   return useMutation({
     mutationFn: async (tagName: string) => {
@@ -38,7 +38,7 @@ export function useAddTag(leadId: string) {
 export function useRemoveTag(leadId: string) {
   const { userContext } = useAuth();
   const queryClient = useQueryClient();
-  const queryKey = tagsQueries.list(leadId).queryKey;
+  const queryKey = queries.tags.list(leadId).queryKey;
 
   return useMutation({
     mutationFn: async (tagId: string) => {

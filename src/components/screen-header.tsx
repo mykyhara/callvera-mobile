@@ -4,9 +4,11 @@ import { View } from "react-native";
 import { BackButton } from "./back-button";
 import { Text } from "./ui/text";
 
+export const ENFORCE_BACK_BUTTON = "enforce";
+
 interface ScreenHeaderProps {
   title: string;
-  withBackButton?: boolean;
+  withBackButton?: boolean | typeof ENFORCE_BACK_BUTTON;
   leftContent?: ReactElement;
   rightContent?: ReactElement;
 }
@@ -18,12 +20,16 @@ export const ScreenHeader = ({
   rightContent,
 }: ScreenHeaderProps) => {
   return (
-    <View className="justify-betwee mt-2 h-8 flex-row items-center">
+    <View className="mt-2 h-10 flex-row items-center justify-between sm:-mx-2 sm:ml-0">
       <View className="flex-1 items-start">
-        {leftContent ? leftContent : withBackButton ? <BackButton /> : null}
+        {leftContent ? (
+          leftContent
+        ) : withBackButton ? (
+          <BackButton alwaysVisible={withBackButton === ENFORCE_BACK_BUTTON} />
+        ) : null}
       </View>
 
-      <View className="flex-1 justify-center">
+      <View className="flex-4 justify-center">
         <Text variant="h4" className="text-center">
           {title}
         </Text>

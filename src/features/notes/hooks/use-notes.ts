@@ -1,16 +1,17 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { queries } from "@/lib/queries";
 import { isAuthError } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
 
 import { createNote, deleteNote, updateNote } from "../services/api";
-import { notesQueries, NoteObjectType } from "../services/queries";
+import { NoteObjectType } from "../services/queries";
 import { Note } from "../types";
 import { normalizeNote } from "../utils/normalize";
 
 export function useGetNotesList(objectType: NoteObjectType, objectId: string) {
   const query = useQuery({
-    ...notesQueries.list(objectType, objectId),
+    ...queries.notes.list(objectType, objectId),
     enabled: !!objectId,
     retry: (failureCount, error) => !isAuthError(error) && failureCount < 2,
   });
@@ -21,7 +22,7 @@ export function useGetNotesList(objectType: NoteObjectType, objectId: string) {
 export function useCreateNote(objectType: NoteObjectType, objectId: string) {
   const { userContext } = useAuth();
   const queryClient = useQueryClient();
-  const queryKey = notesQueries.list(objectType, objectId).queryKey;
+  const queryKey = queries.notes.list(objectType, objectId).queryKey;
 
   return useMutation({
     mutationFn: async (content: string) => {
@@ -47,7 +48,7 @@ export function useCreateNote(objectType: NoteObjectType, objectId: string) {
 export function useUpdateNote(objectType: NoteObjectType, objectId: string) {
   const { userContext } = useAuth();
   const queryClient = useQueryClient();
-  const queryKey = notesQueries.list(objectType, objectId).queryKey;
+  const queryKey = queries.notes.list(objectType, objectId).queryKey;
 
   return useMutation({
     mutationFn: async ({ id, content }: { id: string; content: string }) => {
@@ -69,7 +70,7 @@ export function useUpdateNote(objectType: NoteObjectType, objectId: string) {
 export function useDeleteNote(objectType: NoteObjectType, objectId: string) {
   const { userContext } = useAuth();
   const queryClient = useQueryClient();
-  const queryKey = notesQueries.list(objectType, objectId).queryKey;
+  const queryKey = queries.notes.list(objectType, objectId).queryKey;
 
   return useMutation({
     mutationFn: async (noteId: string) => {

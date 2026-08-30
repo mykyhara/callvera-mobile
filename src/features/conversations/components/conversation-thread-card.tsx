@@ -20,10 +20,10 @@ export const ConversationThreadCard = ({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`Open conversation with ${leadName}`}
-      className="active:opacity-80"
+      className="active:bg-accent rounded-xl"
       onPress={onPress}
     >
-      <Card className="gap-2 py-4" pointerEvents="none">
+      <Card className="gap-2 bg-transparent py-4" pointerEvents="none">
         <CardHeader className="px-4">
           <CardTitle className="text-base">{leadName}</CardTitle>
         </CardHeader>

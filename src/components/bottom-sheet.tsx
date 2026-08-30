@@ -18,6 +18,8 @@ interface BottomSheetModalProps extends GorhomBottomSheetModalProps {
   backdropProps?: Partial<BottomSheetBackdropProps>;
 }
 
+const BORDER_TOP_RADIUS = 16;
+
 export const BottomSheetModal = ({
   ref,
   children,
@@ -35,8 +37,8 @@ export const BottomSheetModal = ({
       enableOverDrag={false}
       snapPoints={snapPoints}
       backgroundStyle={{
-        borderTopLeftRadius: 32,
-        borderTopRightRadius: 32,
+        borderTopLeftRadius: BORDER_TOP_RADIUS,
+        borderTopRightRadius: BORDER_TOP_RADIUS,
         backgroundColor: colors.background,
       }}
       backdropComponent={(props) => (

@@ -7,10 +7,11 @@ import { SetStateHandler, UpdateObjectHandler } from "@/types/utils";
 
 interface GlobalFiltersContextType {
   filters: GlobalFilters;
-  isDefaultFilters: boolean;
   setFilters: SetStateHandler<GlobalFilters>;
   updateFilter: UpdateObjectHandler<GlobalFilters>;
   resetFilters: () => void;
+  activeCount: number;
+  isDefault: boolean;
 }
 
 const DEFAULT_FILTERS = {
@@ -40,16 +41,24 @@ export const GlobalFiltersProvider = ({
     setFilters(DEFAULT_FILTERS);
   };
 
-  const isDefaultFilters = shallowEqual(filters, DEFAULT_FILTERS);
+  const isDefault = shallowEqual(filters, DEFAULT_FILTERS);
+
+  const activeCount = (
+    Object.keys({ ...DEFAULT_FILTERS, ...filters }) as (keyof typeof filters)[]
+  ).reduce(
+    (count, key) => (filters[key] !== DEFAULT_FILTERS[key] ? count + 1 : count),
+    0,
+  );
 
   return (
     <GlobalFiltersContext.Provider
       value={{
         filters,
-        isDefaultFilters,
         setFilters,
         updateFilter,
         resetFilters,
+        activeCount,
+        isDefault,
       }}
     >
       {children}

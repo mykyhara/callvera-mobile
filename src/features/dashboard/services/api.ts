@@ -2,6 +2,8 @@ import { ALL_LOCATIONS } from "@/constants/filters";
 import { supabase } from "@/lib/supabase";
 import { GlobalFilters, LocationOption } from "@/types/api";
 
+import { DashboardMetrics } from "../types";
+
 /** @deprecated temporary placeholder */
 interface RpcResponse {
   total_leads: number | null;
@@ -19,7 +21,7 @@ interface RpcResponse {
 export async function fetchDashboardMetrics(
   filters: GlobalFilters,
   locations: LocationOption[],
-) {
+): Promise<DashboardMetrics> {
   const franchises = [...new Set(locations.map((x) => x.franchise))];
   const locationIds = locations.map((x) => x.locationId);
 

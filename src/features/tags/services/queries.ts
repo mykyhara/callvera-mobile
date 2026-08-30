@@ -1,8 +1,10 @@
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+
 import { Tag } from "../types";
 import { listLeadTags } from "./api";
 import { normalizeTag } from "../utils/normalize";
 
-export const tagsQueries = {
+export const tagsQueries = createQueryKeys("tags", {
   list: (leadId: string) => ({
     queryKey: ["lead-tags", leadId] as const,
     queryFn: async (): Promise<Tag[]> => {
@@ -10,4 +12,4 @@ export const tagsQueries = {
       return rows.map(normalizeTag);
     },
   }),
-};
+});

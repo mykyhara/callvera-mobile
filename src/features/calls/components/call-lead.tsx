@@ -18,14 +18,14 @@ export function CallLead({ call }: CallSummaryProps) {
         <CardTitle>Lead</CardTitle>
       </CardHeader>
       <CardContent className="gap-y-1 px-4">
-        <CardRow label="Name" content={call.leadSource} />
+        <CardRow label="Source" content={call.leadSource || "Unknown"} />
 
         <Button
           variant="secondary"
           onPress={() =>
             router.navigate({
               pathname: "/lead/[id]",
-              params: { id: call.leadId },
+              params: { id: String(call.leadId) },
             })
           }
         >

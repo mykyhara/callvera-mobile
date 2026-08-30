@@ -1,7 +1,7 @@
 import "react-native";
 
 declare module "react-native" {
-  interface FlatListProps<ItemT> {
+  interface FlatListProps {
     className?: string;
   }
 }

@@ -3,6 +3,7 @@ import { RefreshControl, ScrollView, View } from "react-native";
 
 import { CallDetailsViewModel } from "../types";
 import { CallDetailsHeader } from "./call-details-header";
+import { CallDetailsNotes } from "./call-details-notes";
 import { CallLead } from "./call-lead";
 import { CallRecording } from "./call-recording";
 import { CallSummary } from "./call-summary";
@@ -37,6 +38,8 @@ function CallDetails({
         <CallRecording call={call} />
 
         <CallSummary call={call} />
+
+        <CallDetailsNotes callId={call.id} />
       </ScrollView>
     </View>
   );

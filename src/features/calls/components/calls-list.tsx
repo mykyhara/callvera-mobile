@@ -4,6 +4,7 @@ import { View } from "react-native";
 
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
+import { useGlobalFilters } from "@/providers/global-filters-provider";
 
 import { CallsFiltersBar } from "./calls-filters-bar";
 import { CallsListError, CallsListSkeleton } from "./calls-list-states";
@@ -12,8 +13,8 @@ import { useInfiniteCalls } from "../hooks/use-calls";
 import { useCallsFilters } from "../hooks/use-calls-filters";
 
 export function CallsList() {
-  const { filters, updateFilter, resetFilters, isDefaultFilters } =
-    useCallsFilters();
+  const { resetFilters: resetGlobalFilters } = useGlobalFilters();
+  const { filters, updateFilter, resetFilters } = useCallsFilters();
 
   const {
     data,
@@ -53,14 +54,14 @@ export function CallsList() {
     refetch();
   }, [refetch]);
 
+  const handleClearAllFilters = useCallback(() => {
+    resetGlobalFilters();
+    resetFilters();
+  }, [resetGlobalFilters, resetFilters]);
+
   return (
     <View className="flex-1 gap-3">
-      <CallsFiltersBar
-        filters={filters}
-        onSearchChange={handleSearchChange}
-        hasActiveFilters={!isDefaultFilters}
-        onClear={resetFilters}
-      />
+      <CallsFiltersBar filters={filters} onSearchChange={handleSearchChange} />
 
       {isMasked && (
         <Text variant="muted" className="text-xs">
@@ -82,6 +83,7 @@ export function CallsList() {
             hasNextPage={!!hasNextPage}
             isFetchingNextPage={isFetchingNextPage}
             onOpenCall={handleOpenCall}
+            onClearFilters={handleClearAllFilters}
           />
         </View>
       )}

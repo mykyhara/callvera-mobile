@@ -4,6 +4,7 @@ import { View } from "react-native";
 
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
+import { useGlobalFilters } from "@/providers/global-filters-provider";
 
 import { LeadsFiltersBar } from "./leads-filters-bar";
 import { LeadsListError, LeadsListSkeleton } from "./leads-list-states";
@@ -14,6 +15,7 @@ import { useLeadsFilters } from "../hooks/use-leads-filters";
 type FilterField = "dispositions" | "sources" | "campaigns";
 
 export function LeadsList() {
+  const { resetFilters: resetGlobalFilters } = useGlobalFilters();
   const { filters, updateFilter, setFilters, resetFilters } = useLeadsFilters();
 
   const {
@@ -83,6 +85,11 @@ export function LeadsList() {
     refetch();
   }, [refetch]);
 
+  const handleClearAllFilters = useCallback(() => {
+    resetGlobalFilters();
+    resetFilters();
+  }, [resetGlobalFilters, resetFilters]);
+
   return (
     <View className="flex-1 gap-3">
       <LeadsFiltersBar
@@ -115,6 +122,7 @@ export function LeadsList() {
             hasNextPage={!!hasNextPage}
             isFetchingNextPage={isFetchingNextPage}
             onOpenLead={handleOpenLead}
+            onClearFilters={handleClearAllFilters}
           />
         </View>
       )}
