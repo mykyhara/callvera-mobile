@@ -81,7 +81,7 @@ function RootNavigator() {
           />
           <Stack.Screen
             name={SCREENS.CALL_DETAILS}
-            options={{ title: "Call details", headerBackTitle: "Calls" }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name={SCREENS.CONVERSATION}

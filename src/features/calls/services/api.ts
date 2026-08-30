@@ -1,6 +1,6 @@
 import { isAuthError } from "@supabase/supabase-js";
 
-import { ALL_LOCATIONS, Direction } from "@/constants/filters";
+import { ALL_LOCATIONS, Direction, DirectionType } from "@/constants/filters";
 import { supabase } from "@/lib/supabase";
 import { clampPageSize } from "@/lib/utils";
 import { GlobalFilters, MaskedFallbackParams, UserContext } from "@/types/api";
@@ -65,6 +65,32 @@ async function listMaskedCalls(
   });
 }
 
+/** @deprecated temporary placeholder */
+export interface CallRecord {
+  id: string;
+  location_id: number;
+  call_time: string;
+  call_duration: number;
+  direction: DirectionType;
+  call_type: string;
+  disposition_current: string;
+  customer_name: string;
+  customer_email: string;
+  from_number: string;
+  to_number: string;
+  call_successful: boolean;
+  call_recording_url: string;
+  user_sentiment: string;
+  call_summary: string;
+  transcript: string;
+  brand_name: string;
+  location_name: string;
+  campaign: string;
+  lead_source: string;
+  lead_id: string;
+  disconnection_reason: string;
+}
+
 export async function getCall(callId: string) {
   const { data, error } = await supabase
     .from("calls")
@@ -77,8 +103,10 @@ export async function getCall(callId: string) {
     .eq("id", callId)
     .eq("is_disabled", false)
     .single();
+
   if (error) throw error;
-  return data;
+
+  return data as unknown as CallRecord | null;
 }
 
 export async function fetchCallsPageWithFallback(

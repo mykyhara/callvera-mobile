@@ -28,3 +28,28 @@ export type CallsPage = {
 export type CallsFilters = {
   search: string;
 };
+
+export interface CallDetailsViewModel {
+  id: string;
+  locationId: number;
+  callTime: string;
+  callDuration: number;
+  direction: DirectionType;
+  callType: string;
+  dispositionCurrent: string;
+  customerName: string;
+  customerEmail: string;
+  fromNumber: string;
+  toNumber: string;
+  callSuccessful: boolean;
+  callRecordingUrl: string;
+  userSentiment: string;
+  callSummary: string;
+  transcript: string;
+  brandName: string;
+  locationName: string;
+  campaign: string;
+  leadSource: string;
+  leadId: string;
+  disconnectionReason: string;
+}

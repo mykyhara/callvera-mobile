@@ -24,7 +24,7 @@ export const callsQueries = createQueryKeys("calls", {
         pageSize,
       ),
   }),
-  record: (callId: string) => ({
+  details: (callId: string) => ({
     queryKey: [callId],
     queryFn: async () => getCall(callId),
   }),
