@@ -25,6 +25,17 @@ export function formatCreatedAt(createdAt: string | null): string {
   }).format(date);
 }
 
+export function formatDuration(durationMs: number): string {
+  const totalSeconds = Math.floor(Math.max(0, durationMs) / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  const mm = String(minutes).padStart(2, "0");
+  const ss = String(seconds).padStart(2, "0");
+
+  return `${mm}:${ss}`;
+}
+
 type PlainObject = Record<string | number, unknown>;
 
 export function shallowEqual(objA: PlainObject, objB: PlainObject): boolean {

@@ -1,17 +1,23 @@
+import { useBottomSheetModalRef } from "@/components/bottom-sheet";
+import { FiltersButton } from "@/components/filters-button";
+import { GlobalFiltersBottomSheet } from "@/components/global-filters-bottom-sheet";
+import { ScreenHeader } from "@/components/screen-header";
 import { ScreenTemplate } from "@/components/screen-template";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
-import { useSignOut } from "@/features/auth/hooks/use-auth-mutations";
+import { CallsList } from "@/features/calls/components/calls-list";
 
 export default function CallsListScreen() {
-  const { mutate: handleSignOut } = useSignOut();
+  const filtersSheetRef = useBottomSheetModalRef();
 
   return (
-    <ScreenTemplate contentContainerClassName="items-center justify-center gap-4">
-      <Text>Calls screen placeholder</Text>
-      <Button onPress={() => handleSignOut()}>
-        <Text>Sign out</Text>
-      </Button>
-    </ScreenTemplate>
+    <>
+      <ScreenTemplate contentContainerClassName="gap-y-4 pb-4">
+        <ScreenHeader
+          title="Calls"
+          rightContent={<FiltersButton bottomSheetModalRef={filtersSheetRef} />}
+        />
+        <CallsList />
+      </ScreenTemplate>
+      <GlobalFiltersBottomSheet bottomSheetModalRef={filtersSheetRef} />
+    </>
   );
 }

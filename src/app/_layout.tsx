@@ -47,6 +47,7 @@ const SCREENS = {
   APP_ROOT: "(tabs)",
   SIGN_IN: "(auth)/sign-in",
   LEAD_DETAILS: "lead/[id]",
+  CALL_DETAILS: "call/[id]",
   CONVERSATION: "conversation/[leadId]",
   NOTIFICATIONS: "notifications/index",
 } as const;
@@ -77,6 +78,10 @@ function RootNavigator() {
           <Stack.Screen
             name={SCREENS.LEAD_DETAILS}
             options={{ title: "Lead details", headerBackTitle: "Leads" }}
+          />
+          <Stack.Screen
+            name={SCREENS.CALL_DETAILS}
+            options={{ title: "Call details", headerBackTitle: "Calls" }}
           />
           <Stack.Screen
             name={SCREENS.CONVERSATION}
