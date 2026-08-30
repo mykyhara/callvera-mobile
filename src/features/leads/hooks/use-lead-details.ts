@@ -1,30 +1,20 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { queries } from "@/lib/queries";
 
-import { getLeadDetails } from "../services/api";
-import { LeadDetailsViewModel } from "../types";
 import { toLeadDetails } from "../utils/normalize";
 
-export function useLeadDetails(
-  id: string | undefined,
-): LeadDetailsViewModel | undefined {
-  const queryClient = useQueryClient();
-
-  return useMemo(() => {
-    if (!id) return undefined;
-
-    const row = getLeadDetails(queryClient, id);
-    if (!row) return undefined;
-
-    return toLeadDetails(row);
-  }, [id, queryClient]);
-}
-
-export function useLeadCalls(leadId: string) {
+export const useLeadDetails = (leadId: string | undefined) => {
   return useQuery({
-    ...queries.leads.calls(leadId),
+    ...queries.leads.details(leadId!),
+    select: (data) => (data ? toLeadDetails(data) : null),
+    enabled: !!leadId,
+  });
+};
+
+export function useLeadCalls(leadId: string | undefined) {
+  return useQuery({
+    ...queries.leads.calls(leadId!),
     enabled: !!leadId,
   });
 }

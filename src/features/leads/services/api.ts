@@ -1,11 +1,9 @@
-import { QueryClient } from "@tanstack/react-query";
-
-import { ALL_LOCATIONS, Direction } from "@/constants/filters";
+import { ALL_LOCATIONS, Direction, DirectionType } from "@/constants/filters";
 import { supabase } from "@/lib/supabase";
 import { clampPageSize, isAuthError } from "@/lib/utils";
 import { GlobalFilters, MaskedFallbackParams, UserContext } from "@/types/api";
 
-import { LeadRow, LeadsFilters, LeadsPage } from "../types";
+import { LeadsFilters, LeadsPage } from "../types";
 import { normalizeLead, normalizeMaskedLead } from "../utils/normalize";
 
 async function listLeads(
@@ -80,22 +78,61 @@ async function listMaskedLeads({
   });
 }
 
-export function getLeadDetails(
-  queryClient: QueryClient,
-  leadId: string,
-): LeadRow | undefined {
-  const cachedQueries = queryClient.getQueriesData<{ pages: LeadsPage[] }>({
-    queryKey: ["leads"],
-  });
+interface MessageCount {
+  count: number;
+}
 
-  for (const [, data] of cachedQueries) {
-    const row = data?.pages
-      ?.flatMap((page) => page.rows)
-      .find((row) => row.id === leadId);
-    if (row) return row;
-  }
+interface BrandLocations {
+  location_name: string;
+}
 
-  return undefined;
+/** @deprecated temporary placeholder */
+interface LeadRecord {
+  id: string;
+  account_id: string;
+  location_id: number;
+  name: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  email: string;
+  brand_name: string;
+  location_name: string;
+  direction: DirectionType;
+  disposition_current: string;
+  disposition_source: string | null;
+  sub_disposition_current: string | null;
+  source: string;
+  provider: string;
+  campaign: string;
+  summary: string | null;
+  revenue: number;
+  created_at: string;
+  updated_at: string;
+  call_counts: number;
+  lead_action: string[];
+  human_handover: boolean;
+  message_count: MessageCount[];
+  brand_locations: BrandLocations;
+}
+
+export async function getLead(leadId: string) {
+  const { data, error } = await supabase
+    .from("leads")
+    .select(
+      "id,account_id,location_id,name,first_name,last_name,phone,email,brand_name," +
+        "location_name,direction,disposition_current,disposition_source," +
+        "sub_disposition_current,source,provider,campaign,summary,revenue,created_at," +
+        "updated_at,call_counts,lead_action,human_handover," +
+        "message_count:conversations(count),brand_locations(location_name)",
+    )
+    .eq("id", leadId)
+    .eq("is_disabled", false)
+    .single();
+
+  if (error) throw error;
+
+  return data as unknown as LeadRecord | null;
 }
 
 export async function getLeadCalls(leadId: string) {

@@ -3,7 +3,7 @@ import { createQueryKeys } from "@lukemorales/query-key-factory";
 import { GlobalFilters, MaskedFallbackParams, UserContext } from "@/types/api";
 
 import { LeadsFilters } from "../types";
-import { fetchLeadsPageWithFallback, getLeadCalls } from "./api";
+import { fetchLeadsPageWithFallback, getLead, getLeadCalls } from "./api";
 import { normalizeLeadCall } from "../utils/normalize";
 
 export const leadsQueries = createQueryKeys("leads", {
@@ -24,6 +24,10 @@ export const leadsQueries = createQueryKeys("leads", {
         pageParam,
         pageSize,
       ),
+  }),
+  details: (leadId: string) => ({
+    queryKey: [leadId],
+    queryFn: () => getLead(leadId),
   }),
   calls: (leadId: string) => ({
     queryKey: [leadId],

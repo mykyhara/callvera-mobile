@@ -1,5 +1,6 @@
 import { formatCreatedAt } from "@/lib/utils";
 
+import { getLead } from "../services/api";
 import { LeadCall, LeadDetailsViewModel, LeadRow } from "../types";
 
 function extractMessageCount(value: unknown): number | null {
@@ -79,12 +80,61 @@ export function normalizeLeadCall(row: any): LeadCall {
   };
 }
 
-export function toLeadDetails(row: LeadRow): LeadDetailsViewModel {
+type RawLead = Exclude<Awaited<ReturnType<typeof getLead>>, null>;
+export function toLeadDetails(row: RawLead): LeadDetailsViewModel {
+  const createdAtDate = row.created_at ? new Date(row.created_at) : null;
+
+  const totalMessages = Array.isArray(row.message_count)
+    ? row.message_count.reduce((acc, item) => acc + (item.count || 0), 0)
+    : (row.message_count ?? null);
+
   return {
-    ...row,
-    createdAtLabel: formatCreatedAt(row.createdAt),
-    revenueLabel: formatRevenue(row.revenue),
-    dispositionLabel: row.disposition ?? "No disposition",
-    sourceLabel: row.source ?? "Unknown source",
+    id: row.id,
+    name:
+      row.name ||
+      (row.first_name || row.last_name
+        ? `${row.first_name || ""} ${row.last_name || ""}`.trim()
+        : null),
+    phone: row.phone || null,
+    email: row.email || null,
+    locationName:
+      row.location_name || row.brand_locations?.location_name || null,
+    disposition: row.disposition_current || null,
+    dispositionSource: row.disposition_source || null,
+    source: row.source || row.provider || null,
+    campaign: row.campaign || null,
+    summary: row.summary || null,
+    revenue: row.revenue ?? null,
+    callCounts: row.call_counts ?? null,
+    createdAt: row.created_at || null,
+    direction: row.direction || null,
+    messageCount: totalMessages,
+    isMasked: false,
+
+    createdAtLabel: createdAtDate
+      ? createdAtDate.toLocaleString("en-US", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        })
+      : "N/A",
+
+    revenueLabel:
+      row.revenue != null
+        ? new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(row.revenue)
+        : "$0.00",
+
+    dispositionLabel: row.disposition_current
+      ? row.disposition_current
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, (char) => char.toUpperCase())
+      : "Unassigned",
+
+    sourceLabel:
+      [row.provider, row.campaign].filter(Boolean).join(" - ") ||
+      row.source ||
+      "Direct",
   };
 }

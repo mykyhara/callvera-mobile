@@ -1,5 +1,6 @@
 import { View } from "react-native";
 
+import { SkeletonText } from "@/components/skeleton-text";
 import { Text } from "@/components/ui/text";
 
 import { LeadDetailsViewModel } from "../types";
@@ -32,6 +33,26 @@ export function LeadDetailsHeader({ lead }: LeadDetailsHeaderProps) {
           <Text numberOfLines={1} className="text-sm">
             {lead.email ?? "No email"}
           </Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+export function LeadDetailsHeaderSkeleton() {
+  return (
+    <View className="bg-card border-b-border -mx-4 gap-1 border-b px-4 pb-4">
+      <SkeletonText variant="h3" />
+      <SkeletonText className="text-sm" />
+
+      <View className="mt-1 flex-row gap-4">
+        <View className="flex-1 gap-1.5">
+          <SkeletonText className="text-sm" />
+          <SkeletonText className="text-sm" />
+        </View>
+        <View className="flex-1 gap-1.5">
+          <SkeletonText className="text-sm" />
+          <SkeletonText className="text-sm" />
         </View>
       </View>
     </View>
