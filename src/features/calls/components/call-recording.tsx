@@ -1,5 +1,6 @@
-import { CardRow } from "@/components/card-row";
+import { AudioPlayer } from "@/components/audio-player";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Text } from "@/components/ui/text";
 
 import { CallDetailsViewModel } from "../types";
 
@@ -7,15 +8,20 @@ interface CallRecordingProps {
   call: CallDetailsViewModel;
 }
 
+const RECORDING_PLAYBACK_ENDPOINT_NOTE =
+  "Recording playback must use the Callvera-provided protected recording endpoint.";
+
 export function CallRecording({ call }: CallRecordingProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Recording</CardTitle>
       </CardHeader>
-      <CardContent className="gap-y-1 px-4">
-        {/* TODO: implement Audio Player */}
-        <CardRow label="URL" content={call.callRecordingUrl} />
+      <CardContent>
+        <AudioPlayer url={call.callRecordingUrl} disabled={true} />
+        <Text variant="muted" className="mt-2 text-xs">
+          {RECORDING_PLAYBACK_ENDPOINT_NOTE}
+        </Text>
       </CardContent>
     </Card>
   );
