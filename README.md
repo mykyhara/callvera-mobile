@@ -4,7 +4,11 @@ Test assessment showcasing dashboard built with Expo stack for Callvera team.
 
 ## Screencast
 
-Screencast showcasing app: [IOS screencast] [Android screencast]
+Screencasts showcasing app: 
+
+https://github.com/user-attachments/assets/de3f4726-da0b-4399-8df9-a4751f0d4810
+
+https://github.com/user-attachments/assets/5d752f04-7391-4ba2-87ba-7fe820d8bcad
 
 ## Get Started
 
