@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queries } from "@/lib/queries";
+import { isNotAcceptableError } from "@/lib/utils";
 
 import { toLeadDetails } from "../utils/normalize";
 
@@ -9,6 +10,8 @@ export const useLeadDetails = (leadId: string | undefined) => {
     ...queries.leads.details(leadId!),
     select: (data) => (data ? toLeadDetails(data) : null),
     enabled: !!leadId,
+    retry: (failureCount, error) =>
+      !isNotAcceptableError(error) && failureCount < 2,
   });
 };
 

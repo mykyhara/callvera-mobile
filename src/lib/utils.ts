@@ -15,6 +15,12 @@ export function isAuthError(error: unknown): boolean {
   return !!code;
 }
 
+export function isNotAcceptableError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const { status, code } = error as { status?: number; code?: string };
+  return status === 406 || code === "PGRST116";
+}
+
 export function formatCreatedAt(createdAt: string | null): string {
   if (!createdAt) return "Unknown";
   const date = new Date(createdAt);
