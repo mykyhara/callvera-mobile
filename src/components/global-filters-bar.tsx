@@ -15,6 +15,7 @@ import { DateRange, FilterOption } from "@/types/utils";
 import { DateRangePicker } from "./date-range-picker";
 import { DropdownPickerOption } from "./dropdown-picker";
 import { FilterChipGroup } from "./filter-chip-group";
+import { Text } from "./ui/text";
 
 type GlobalFiltersContext = ReturnType<typeof useGlobalFilters>;
 
@@ -60,6 +61,11 @@ export const GlobalFiltersBar = ({
 
   return (
     <View className={cn("gap-y-2", className)}>
+      {!locations.length && (
+        <Text className="text-destructive text-center text-sm">
+          No locations have been assigned to this user
+        </Text>
+      )}
       <FilterChipGroup
         label="Location"
         options={locationPickerOptions}

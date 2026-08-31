@@ -16,11 +16,9 @@ export function CallsListSkeleton() {
             <Text>Call</Text>
           </Table.Head>
           <Table.Head>
-            {/* TODO: ?? */}
             <Text>Disposition</Text>
           </Table.Head>
           <Table.Head>
-            {/* TODO: ?? */}
             <Text>Messages</Text>
           </Table.Head>
           <Table.Head className="w-20 flex-none">
