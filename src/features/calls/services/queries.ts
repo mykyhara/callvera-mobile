@@ -3,7 +3,7 @@ import { createQueryKeys } from "@lukemorales/query-key-factory";
 import { GlobalFilters, MaskedFallbackParams, UserContext } from "@/types/api";
 
 import { CallsFilters } from "../types";
-import { fetchCallsPageWithFallback, getCall } from "./api";
+import { fetchCallsPageWithFallback, getCall, getCallRecording } from "./api";
 
 export const callsQueries = createQueryKeys("calls", {
   list: (
@@ -27,5 +27,9 @@ export const callsQueries = createQueryKeys("calls", {
   details: (callId: string) => ({
     queryKey: [callId],
     queryFn: async () => getCall(callId),
+  }),
+  recording: (callId: string) => ({
+    queryKey: [callId],
+    queryFn: () => getCallRecording(callId),
   }),
 });

@@ -2,6 +2,7 @@ import { memo } from "react";
 import { ScrollView, View } from "react-native";
 
 import { LeadDetailsViewModel } from "../types";
+import { LeadActionsBar } from "./lead-actions-bar";
 import { LeadDetailsHeader } from "./lead-details-header";
 import { LeadDetailsNotes } from "./lead-details-notes";
 import { LeadDetailsRelatedCalls } from "./lead-details-related-calls";
@@ -21,6 +22,8 @@ function LeadDetails({ lead }: LeadDetailsProps) {
         contentContainerClassName="gap-4 pt-4 pb-safe"
         showsVerticalScrollIndicator={false}
       >
+        <LeadActionsBar leadId={lead.id} disabled />
+
         <LeadSummary lead={lead} />
 
         <LeadDetailsRelatedCalls leadId={lead.id} />

@@ -1,4 +1,6 @@
+import { API_BASE_URL } from "@/constants/api";
 import { ALL_LOCATIONS, Direction, DirectionType } from "@/constants/filters";
+import { callMobileApi } from "@/lib/mobile-api";
 import { supabase } from "@/lib/supabase";
 import { clampPageSize, isAuthError } from "@/lib/utils";
 import { GlobalFilters, MaskedFallbackParams, UserContext } from "@/types/api";
@@ -199,4 +201,43 @@ export async function fetchLeadsPageWithFallback(
       isMasked: true,
     };
   }
+}
+
+/** mock adapter */
+export function toggleLeadManualMode(
+  leadId: string,
+  payload: { enabled: boolean },
+) {
+  return callMobileApi(API_BASE_URL, `/v1/leads/${leadId}/manual-mode`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+/** mock adapter */
+export function addLeadMessage(leadId: string, payload: { message: string }) {
+  return callMobileApi(API_BASE_URL, `/v1/leads/${leadId}/messages`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+/** mock adapter */
+export function leadReturnToAI(leadId: string) {
+  return callMobileApi(API_BASE_URL, `/v1/leads/${leadId}/return-to-ai`, {
+    method: "POST",
+  });
+}
+
+type NotificationType = string;
+
+/** mock adapter */
+export function addLeadNotification(
+  leadId: string,
+  payload: { notificationType: NotificationType },
+) {
+  return callMobileApi(API_BASE_URL, `/v1/leads/${leadId}/notifications`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }

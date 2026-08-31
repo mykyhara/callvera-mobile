@@ -1,6 +1,8 @@
 import { isAuthError } from "@supabase/supabase-js";
 
+import { API_BASE_URL } from "@/constants/api";
 import { ALL_LOCATIONS, Direction, DirectionType } from "@/constants/filters";
+import { callMobileApi } from "@/lib/mobile-api";
 import { supabase } from "@/lib/supabase";
 import { clampPageSize } from "@/lib/utils";
 import { GlobalFilters, MaskedFallbackParams, UserContext } from "@/types/api";
@@ -155,4 +157,9 @@ export async function fetchCallsPageWithFallback(
       isMasked: true,
     };
   }
+}
+
+/** mock adapter */
+export function getCallRecording(callId: string) {
+  return callMobileApi(API_BASE_URL, `/v1/calls/${callId}/recording`);
 }
