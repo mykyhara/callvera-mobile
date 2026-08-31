@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { PropsWithChildren } from "react";
 import {
   ScrollView,
@@ -10,6 +11,8 @@ import {
 } from "react-native";
 
 import { cn } from "@/lib/utils";
+
+import { OfflineBanner } from "./offline-banner";
 
 interface ScreenTemplateProps extends ScreenTemplateContainerProps {
   statusBarProps?: StatusBarProps;
@@ -28,6 +31,8 @@ export const ScreenTemplate = ({
 }: ScreenTemplateProps) => {
   const colorScheme = useColorScheme();
 
+  const { isConnected } = useNetInfo();
+
   return (
     <>
       <StatusBar
@@ -45,6 +50,7 @@ export const ScreenTemplate = ({
         scrollViewProps={scrollViewProps}
         viewProps={viewProps}
       >
+        {!isConnected && <OfflineBanner />}
         {children}
       </ScreenTemplateContainer>
     </>
